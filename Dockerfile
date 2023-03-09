@@ -42,7 +42,8 @@ COPY root/usr/libexec/fix-permissions /usr/libexec/fix-permissions
 # safe in the future. This should *never* change, the last test is there
 # to make sure of that.
 RUN chgrp -R 0 /usr/libexec && \
-    chmod -R g=u /usr/libexec \{ yum -y module enable postgresql:15 || :; } && \
+    chmod -R g=u /usr/libexec \
+    { yum -y module enable postgresql:15 || :; } && \
     INSTALL_PKGS="rsync tar gettext bind-utils nss_wrapper postgresql-server postgresql-contrib" && \
     INSTALL_PKGS="$INSTALL_PKGS pgaudit" && \
     yum -y --setopt=tsflags=nodocs install $INSTALL_PKGS && \
