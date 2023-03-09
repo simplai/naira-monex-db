@@ -5,7 +5,7 @@ Recursively fix permissions on the given directories to allow GID=0
 read/write regular files and read/write/execute directories.
 
 To run this command, you have to be in the group root=0!"
-
+echo "HOLAAAAAAAAAAAAAAAA"
 uid=26
 write=w
 
