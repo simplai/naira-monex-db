@@ -65,8 +65,6 @@ RUN chgrp -R 0 /usr/libexec && \
 
 RUN chmod a+x /usr/libexec/fix-permissions
 
-RUN ls -l /usr/libexec
-
 RUN /usr/libexec/fix-permissions /var/lib/pgsql /var/run/postgresql
 
 # Get prefix path and path to scripts rather than hard-code them in scripts
@@ -94,12 +92,11 @@ COPY ./s2i/bin/ $STI_SCRIPTS_PATH
 RUN chgrp -R 0 "$APP_DATA" && \
     chmod -R g=u "$APP_DATA"
 
-RUN echo "$APP_DATA"
+RUN usermod -a -G root postgres
 
-RUN echo $APP_DATA
+RUN ls -l /usr/libexec
 
-RUN usermod -a -G root postgres && \
-    /usr/libexec/fix-permissions --read-only "$APP_DATA"
+RUN /usr/libexec/fix-permissions --read-only "$APP_DATA"
 
 USER 26
 
