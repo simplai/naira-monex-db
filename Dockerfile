@@ -91,6 +91,9 @@ COPY ./s2i/bin/ $STI_SCRIPTS_PATH
 # 2. we call fix-permissions on $APP_DATA here directly (UID=0 during build
 #    anyways) to assure that s2i process is actually able to _read_ the
 #    user-specified scripting.
+RUN chgrp -R 0 $APP_DATA && \
+    chmod -R g=u $APP_DATA
+
 RUN usermod -a -G root postgres && \
     /usr/libexec/fix-permissions --read-only "$APP_DATA"
 
