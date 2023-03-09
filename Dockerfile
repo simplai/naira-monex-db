@@ -63,7 +63,7 @@ RUN chgrp -R 0 /var/run/postgresql && \
 RUN chgrp -R 0 /usr/libexec && \
     chmod -R g=u /usr/libexec
 
-RUN ls -l
+RUN ls -l /usr/libexec
 
 RUN /usr/libexec/fix-permissions /var/lib/pgsql /var/run/postgresql
 
