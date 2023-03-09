@@ -94,6 +94,10 @@ COPY ./s2i/bin/ $STI_SCRIPTS_PATH
 RUN chgrp -R 0 "$APP_DATA" && \
     chmod -R g=u "$APP_DATA"
 
+RUN echo "$APP_DATA"
+
+RUN echo $APP_DATA
+
 RUN usermod -a -G root postgres && \
     /usr/libexec/fix-permissions --read-only "$APP_DATA"
 
