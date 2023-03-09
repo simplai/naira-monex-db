@@ -1,4 +1,4 @@
-FROM quay.io/sclorg/s2i-core-c9s:c9s
+FROM quay.io/sclorg/s2i-core-c8s:c8s
 
 # PostgreSQL image for OpenShift.
 # Volumes:
@@ -28,10 +28,10 @@ LABEL summary="$SUMMARY" \
       io.openshift.expose-services="5432:postgresql" \
       io.openshift.tags="database,postgresql,postgresql15,postgresql-15" \
       io.openshift.s2i.assemble-user="26" \
-      name="sclorg/postgresql-15-c9s" \
+      name="sclorg/postgresql-15-c8s" \
       com.redhat.component="postgresql-15-container" \
       version="1" \
-      usage="podman run -d --name postgresql_database -e POSTGRESQL_USER=user -e POSTGRESQL_PASSWORD=pass -e POSTGRESQL_DATABASE=db -p 5432:5432 sclorg/postgresql-15-c9s" \
+      usage="podman run -d --name postgresql_database -e POSTGRESQL_USER=user -e POSTGRESQL_PASSWORD=pass -e POSTGRESQL_DATABASE=db -p 5432:5432 sclorg/postgresql-15-c8s" \
       maintainer="SoftwareCollections.org <sclorg@redhat.com>"
 
 EXPOSE 5432
@@ -41,14 +41,13 @@ COPY root/usr/libexec/fix-permissions /usr/libexec/fix-permissions
 # This image must forever use UID 26 for postgres user so our volumes are
 # safe in the future. This should *never* change, the last test is there
 # to make sure of that.
-RUN chgrp -R 0 /usr/libexec && \
-    chmod -R g=u /usr/libexec \
-    { yum -y module enable postgresql:15 || :; } && \
+RUN yum -y module enable postgresql:15 && \
     INSTALL_PKGS="rsync tar gettext bind-utils nss_wrapper postgresql-server postgresql-contrib" && \
     INSTALL_PKGS="$INSTALL_PKGS pgaudit" && \
     yum -y --setopt=tsflags=nodocs install $INSTALL_PKGS && \
     rpm -V $INSTALL_PKGS && \
     postgres -V | grep -qe "$POSTGRESQL_VERSION\." && echo "Found VERSION $POSTGRESQL_VERSION" && \
+    yum -y reinstall tzdata && \
     yum -y clean all --enablerepo='*' && \
     localedef -f UTF-8 -i en_US en_US.UTF-8 && \
     test "$(id postgres)" = "uid=26(postgres) gid=26(postgres) groups=26(postgres)" && \
@@ -56,8 +55,8 @@ RUN chgrp -R 0 /usr/libexec && \
     /usr/libexec/fix-permissions /var/lib/pgsql /var/run/postgresql
 
 # Get prefix path and path to scripts rather than hard-code them in scripts
-ENV CONTAINER_SCRIPTS_PATH=/usr/share/container-scripts/postgresql
-#    ENABLED_COLLECTIONS=
+ENV CONTAINER_SCRIPTS_PATH=/usr/share/container-scripts/postgresql \
+    ENABLED_COLLECTIONS=
 
 COPY root /
 COPY ./s2i/bin/ $STI_SCRIPTS_PATH
