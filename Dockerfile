@@ -55,15 +55,12 @@ RUN yum -y module enable postgresql:15 && \
 RUN mkdir -p /var/lib/pgsql/data
 
 RUN chgrp -R 0 /var/lib/pgsql && \
-    chmod -R g=u /var/lib/pgsql
-
-RUN chgrp -R 0 /var/run/postgresql && \
-    chmod -R g=u /var/run/postgresql
-
-RUN chgrp -R 0 /usr/libexec && \
-    chmod -R g=u /usr/libexec
-
-RUN chmod a+x /usr/libexec/fix-permissions
+    chmod -R g=u /var/lib/pgsql && \
+    chgrp -R 0 /var/run/postgresql && \
+    chmod -R g=u /var/run/postgresql && \
+    chgrp -R 0 /usr/libexec && \
+    chmod -R g=u /usr/libexec && \
+    chmod a+x /usr/libexec/fix-permissions
 
 RUN /usr/libexec/fix-permissions /var/lib/pgsql /var/run/postgresql
 
@@ -90,13 +87,9 @@ COPY ./s2i/bin/ $STI_SCRIPTS_PATH
 #    anyways) to assure that s2i process is actually able to _read_ the
 #    user-specified scripting.
 RUN chgrp -R 0 "$APP_DATA" && \
-    chmod -R g=u "$APP_DATA"
-
-RUN usermod -a -G root postgres
-
-RUN chmod a+x /usr/libexec/fix-permissions
-
-RUN ls -l /usr/libexec
+    chmod -R g=u "$APP_DATA" && \
+    usermod -a -G root postgres && \
+    chmod a+x /usr/libexec/fix-permissions
 
 RUN /usr/libexec/fix-permissions --read-only "$APP_DATA"
 
