@@ -38,13 +38,11 @@ EXPOSE 5432
 
 COPY root/usr/libexec/fix-permissions /usr/libexec/fix-permissions
 
-RUN chgrp -R 0 /usr/libexec && \
-    chmod -R g=u /usr/libexec \
-    
 # This image must forever use UID 26 for postgres user so our volumes are
 # safe in the future. This should *never* change, the last test is there
 # to make sure of that.
-RUN  { yum -y module enable postgresql:15 || :; } && \
+RUN chgrp -R 0 /usr/libexec && \
+    chmod -R g=u /usr/libexec \{ yum -y module enable postgresql:15 || :; } && \
     INSTALL_PKGS="rsync tar gettext bind-utils nss_wrapper postgresql-server postgresql-contrib" && \
     INSTALL_PKGS="$INSTALL_PKGS pgaudit" && \
     yum -y --setopt=tsflags=nodocs install $INSTALL_PKGS && \
@@ -57,8 +55,8 @@ RUN  { yum -y module enable postgresql:15 || :; } && \
     /usr/libexec/fix-permissions /var/lib/pgsql /var/run/postgresql
 
 # Get prefix path and path to scripts rather than hard-code them in scripts
-ENV CONTAINER_SCRIPTS_PATH=/usr/share/container-scripts/postgresql \
-    ENABLED_COLLECTIONS=
+ENV CONTAINER_SCRIPTS_PATH=/usr/share/container-scripts/postgresql
+#    ENABLED_COLLECTIONS=
 
 COPY root /
 COPY ./s2i/bin/ $STI_SCRIPTS_PATH
