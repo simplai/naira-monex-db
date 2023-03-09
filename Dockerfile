@@ -38,9 +38,6 @@ EXPOSE 5432
 
 COPY root/usr/libexec/fix-permissions /usr/libexec/fix-permissions
 
-RUN chgrp -R 0 /usr/libexec && \
-    chmod -R g=u /usr/libexec
-
 # This image must forever use UID 26 for postgres user so our volumes are
 # safe in the future. This should *never* change, the last test is there
 # to make sure of that.
@@ -62,6 +59,9 @@ RUN chgrp -R 0 /var/lib/pgsql && \
 
 RUN chgrp -R 0 /var/run/postgresql && \
     chmod -R g=u /var/run/postgresql
+
+RUN chgrp -R 0 /usr/libexec && \
+    chmod -R g=u /usr/libexec \
 
 RUN /usr/libexec/fix-permissions /var/lib/pgsql /var/run/postgresql
 
