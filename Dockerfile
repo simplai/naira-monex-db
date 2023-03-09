@@ -94,6 +94,8 @@ RUN chgrp -R 0 "$APP_DATA" && \
 
 RUN usermod -a -G root postgres
 
+RUN chmod a+x /usr/libexec/fix-permissions
+
 RUN ls -l /usr/libexec
 
 RUN /usr/libexec/fix-permissions --read-only "$APP_DATA"
