@@ -50,9 +50,19 @@ RUN yum -y module enable postgresql:15 && \
     yum -y reinstall tzdata && \
     yum -y clean all --enablerepo='*' && \
     localedef -f UTF-8 -i en_US en_US.UTF-8 && \
-    test "$(id postgres)" = "uid=26(postgres) gid=26(postgres) groups=26(postgres)" && \
-    mkdir -p /var/lib/pgsql/data && \
-    /usr/libexec/fix-permissions /var/lib/pgsql /var/run/postgresql
+    test "$(id postgres)" = "uid=26(postgres) gid=26(postgres) groups=26(postgres)"
+
+RUN mkdir -p /var/lib/pgsql/data
+
+RUN chgrp -R 0 /var/lib/pgsql && \
+    chmod -R g=u /var/lib/pgsql && \
+    chgrp -R 0 /var/run/postgresql && \
+    chmod -R g=u /var/run/postgresql && \
+    chgrp -R 0 /usr/libexec && \
+    chmod -R g=u /usr/libexec && \
+    chmod a+x /usr/libexec/fix-permissions
+
+RUN /usr/libexec/fix-permissions /var/lib/pgsql /var/run/postgresql
 
 # Get prefix path and path to scripts rather than hard-code them in scripts
 ENV CONTAINER_SCRIPTS_PATH=/usr/share/container-scripts/postgresql \
@@ -76,8 +86,12 @@ COPY ./s2i/bin/ $STI_SCRIPTS_PATH
 # 2. we call fix-permissions on $APP_DATA here directly (UID=0 during build
 #    anyways) to assure that s2i process is actually able to _read_ the
 #    user-specified scripting.
-RUN usermod -a -G root postgres && \
-    /usr/libexec/fix-permissions --read-only "$APP_DATA"
+RUN chgrp -R 0 "$APP_DATA" && \
+    chmod -R g=u "$APP_DATA" && \
+    usermod -a -G root postgres && \
+    chmod a+x /usr/libexec/fix-permissions
+
+RUN /usr/libexec/fix-permissions --read-only "$APP_DATA"
 
 USER 26
 
