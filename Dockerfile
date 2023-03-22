@@ -1,5 +1,5 @@
 # FROM registry.access.redhat.com/ubi8/nginx-120
-FROM registry.redhat.io/rhel9/postgresql-13
+FROM registry.redhat.io/rhel9/postgresql-15
 
 ENV POSTGRESQL_USER=admin
 ENV POSTGRESQL_PASSWORD=admin
