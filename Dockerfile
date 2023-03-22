@@ -1,6 +1,10 @@
 # FROM registry.access.redhat.com/ubi8/nginx-120
 FROM registry.redhat.io/rhel9/postgresql-13
 
+ENV POSTGRESQL_USER=admin
+ENV POSTGRESQL_PASSWORD=admin
+ENV POSTGRESQL_DATABASE=naira
+
 #ENV NGINX_VERSION=1.20
 #
 ## Add application sources
