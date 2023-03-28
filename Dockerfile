@@ -3,7 +3,7 @@ FROM registry.redhat.io/rhel9/python-39
 
 # Add application sources with correct permissions for OpenShift
 USER 0
-ADD app-src .
+ADD api/ api/
 RUN chown -R 1001:0 ./
 USER 1001
 

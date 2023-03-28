@@ -1,0 +1,42 @@
+class Config(object):
+    DEBUG = False
+    TESTING = False
+
+class ProductionConfig(Config):
+    DEBUG = False
+    TESTING = False
+    SQLALCHEMY_DATABASE_URI = ""
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_ECHO = False
+    API_TOKEN = ""
+    FLASK_ADMIN_SWATCH = ""
+    SECURITY_PASSWORD_SALT = ""
+    SECURITY_POST_LOGIN_VIEW = "login/"
+    SECURITY_POST_LOGIN_VIEW = "admin/"
+    SECURITY_REGISTERABLE = False
+    SECURITY_SEND_REGISTER_EMAIL = False
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    JWT_SECRET_KEY = ""
+    JWT_ACCESS_TOKEN_EXPIRES = False
+    WTF_CSRF_ENABLED = False
+
+class DevelopmentConfig(Config):
+    DEBUG = True
+    TESTING = False
+    SQLALCHEMY_DATABASE_URI = ""
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_ECHO = True
+    API_TOKEN = ""
+    FLASK_ADMIN_SWATCH = ""
+    SECURITY_PASSWORD_SALT = ""
+    SECURITY_POST_LOGIN_VIEW = "/login/"
+    SECURITY_POST_LOGIN_VIEW = "/admin/"
+    SECURITY_REGISTERABLE = False
+    SECURITY_SEND_REGISTER_EMAIL = False
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    JWT_SECRET_KEY = ""
+    JWT_ACCESS_TOKEN_EXPIRES = False
+    WTF_CSRF_ENABLED = False
+    
+class TestingConfig(Config):
+    TESTING = True
