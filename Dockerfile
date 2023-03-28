@@ -3,11 +3,11 @@ FROM registry.redhat.io/rhel9/python-39
 
 # Add application sources with correct permissions for OpenShift
 USER 0
-ADD api/ api/
+ADD api/ .
 RUN chown -R 1001:0 ./
 USER 1001
 
-CMD ["bash"]
+CMD bash
 
 #FROM registry.redhat.io/rhel9/postgresql-13
 #
