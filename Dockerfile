@@ -7,7 +7,14 @@ ADD api/ .
 RUN chown -R 1001:0 ./
 USER 1001
 
-CMD bash
+RUN pip install -U "pip>=19.3.1" && \
+    pip install -r requirements.txt
+
+ENV FLASK_ENV=development
+ENV FLASK_APP=api
+ENV FLASK_SECRET=b'_5#y2L"F4Q8z\n\xec]/'
+
+CMD ["flask", "run"]
 
 #FROM registry.redhat.io/rhel9/postgresql-13
 #
