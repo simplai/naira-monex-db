@@ -7,6 +7,8 @@ ADD api/ api/
 RUN chown -R 1001:0 ./
 USER 1001
 
+CMD ["bash"]
+
 #FROM registry.redhat.io/rhel9/postgresql-13
 #
 #ENV POSTGRESQL_USER=admin
