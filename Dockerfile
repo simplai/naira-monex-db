@@ -1,9 +1,19 @@
-# FROM registry.access.redhat.com/ubi8/nginx-120
-FROM registry.redhat.io/rhel9/postgresql-15
+FROM registry.redhat.io/rhel9/python-39
 
-ENV POSTGRESQL_USER=admin
-ENV POSTGRESQL_PASSWORD=admin
-ENV POSTGRESQL_DATABASE=naira
+
+# Add application sources with correct permissions for OpenShift
+USER 0
+ADD app-src .
+RUN chown -R 1001:0 ./
+USER 1001
+
+#FROM registry.redhat.io/rhel9/postgresql-13
+#
+#ENV POSTGRESQL_USER=admin
+#ENV POSTGRESQL_PASSWORD=admin
+#ENV POSTGRESQL_DATABASE=naira
+
+# FROM registry.access.redhat.com/ubi8/nginx-120
 
 #ENV NGINX_VERSION=1.20
 #
