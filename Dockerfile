@@ -1,4 +1,5 @@
 FROM registry.redhat.io/rhel9/postgresql-13
+#FROM registry.access.redhat.com/ubi8/postgresql-10
 
 VOLUME /var/lib/pgsql/data
 
@@ -7,5 +8,3 @@ ENV POSTGRESQL_PASSWORD=admin
 ENV POSTGRESQL_DATABASE=naira
 
 ADD dump12042023.sql .
-
-# RUN psql -U $POSTGRESQL_USER $POSTGRESQL_DATABASE < dump03042023.sql
