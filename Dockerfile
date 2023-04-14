@@ -4,7 +4,7 @@ FROM registry.redhat.io/rhel9/postgresql-13
 VOLUME /var/lib/pgsql/data
 
 ENV POSTGRESQL_USER=admin
-ENV POSTGRESQL_PASSWORD=admin
+ENV POSTGRESQL_PASSWORD=s3cr3tPassW00rd
 ENV POSTGRESQL_DATABASE=naira
 
 ADD dump12042023.sql .
