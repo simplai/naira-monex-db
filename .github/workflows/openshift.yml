@@ -11,7 +11,7 @@ env:
   REGISTRY_PASSWORD: ${{ github.token }}
   IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
   
-  APP_PORT: 5000
+  APP_PORT: 5432
   APP_NAME: naira-monex-db
   IMAGE_TAGS: latest
   
