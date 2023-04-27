@@ -107,8 +107,13 @@ jobs:
         create_pull_secret_from: podman
         
         
+    - name: Delete route
+      run: |
+        oc delete route naira-monex-db
+        
+        
     - name: Print application URL
-      env:
+      env: 
         ROUTE: ${{ steps.deploy-and-expose.outputs.route }}
         SELECTOR: ${{ steps.deploy-and-expose.outputs.selector }}
       run: |
