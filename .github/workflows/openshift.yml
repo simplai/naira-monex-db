@@ -49,7 +49,7 @@ jobs:
       with: 
         username: ${{ env.REGISTRY_USER }} 
         password: ${{ env.REGISTRY_PASSWORD }} 
-        registry: ${{ env.IMAGE_REGISTRY }} 
+        registry: ${{ env.IMAGE_REGISTRY }}/dalcalde
         
     - name: Log in to redhat registry
       uses: redhat-actions/podman-login@v1 
