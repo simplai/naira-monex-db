@@ -1,0 +1,117 @@
+name: OpenShift
+
+on: 
+  push: 
+    branches: [ master ] 
+    
+env: 
+  user_name: ${{ github.repository_owner }}
+  OPENSHIFT_NAMESPACE: dalcalde-dev
+  REGISTRY_USER: ${{ github.actor }} 
+  REGISTRY_PASSWORD: ${{ github.token }}
+  IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
+  
+  APP_PORT: 5000
+  APP_NAME: naira-monex-db
+  IMAGE_TAGS: latest
+  
+  # variables de entorno que cambian en cada despliegue dependiendo el recurso a desplegar 
+  # name_image_build: jhipster-monextrader 
+  # name_image_build: monex-apache-front 
+  # name_image_build: historical-services-monextrader 
+  # name_image_build: rdp-services-monextrader
+  # name_image_build: trader-service-monextrader 
+  # name_image_build: rdp-monextrader 
+  # name_image_build: es-indexer-monextrader 
+  # name_image_build: historical-connector-monextrader 
+  # name_image_build: kafka-consumer-monextrader 
+  name_image_build: naira-monex-back 
+  
+jobs: 
+  Deploy-environment-pre: 
+    name: DeployConnectorsOpenshift 
+    runs-on: ubuntu-latest 
+    steps: 
+    - name: Checkout the repository 
+      uses: actions/checkout@v3 
+      
+    #- name: Add hosts to /etc/hosts - actions 
+    #  run: | 
+    #    sudo echo "20.225.19.122 api.monex-dev.southcentralus.aroapp.io" | 
+    #    sudo tee -a /etc/hosts 
+      
+    - name: Log in to ghcr.io 
+      uses: redhat-actions/podman-login@v1 
+      with: 
+        username: ${{ env.REGISTRY_USER }} 
+        password: ${{ env.REGISTRY_PASSWORD }} 
+        registry: ${{ env.IMAGE_REGISTRY }} 
+        
+    - name: Log in to redhat registry
+      uses: redhat-actions/podman-login@v1 
+      with: 
+        username: dalcalde@simplai.es
+        password: HakunaMatata1
+        registry: registry.redhat.io
+        
+        
+        
+    - name: Build from Dockerfile
+      id: build-image
+      uses: redhat-actions/buildah-build@v2
+      with:
+        image: ${{ env.APP_NAME }}
+        tags: ${{ env.IMAGE_TAGS }}
+
+        # If you don't have a Dockerfile/Containerfile, refer to https://github.com/redhat-actions/buildah-build#scratch-build-inputs
+        # Or, perform a source-to-image build using https://github.com/redhat-actions/s2i-build
+        # Otherwise, point this to your Dockerfile/Containerfile relative to the repository root.
+        dockerfiles: |
+          ./Dockerfile
+          
+    - name: Push To Github Package 
+      id: push-to-quay 
+      uses: redhat-actions/push-to-registry@v2 
+      with: 
+        image: ${{ steps.build-image.outputs.image }} 
+        tags: ${{ steps.build-image.outputs.tags }} 
+        registry: ${{ env.IMAGE_REGISTRY }} 
+        
+    - name: Install oc
+      uses: redhat-actions/openshift-tools-installer@v1
+      with:
+        oc: 4
+        
+    - name: Authenticate and set context in openshift 
+      uses: redhat-actions/oc-login@v1 
+      with: 
+        openshift_server_url: ${{ secrets.OPENSHIFT_SERVER }} 
+        openshift_token: ${{ secrets.OPENSHIFT_TOKEN }} 
+        insecure_skip_tls_verify: true 
+        namespace: ${{ env.OPENSHIFT_NAMESPACE }} 
+        
+    - name: Create and expose app
+      id: deploy-and-expose
+      uses: redhat-actions/oc-new-app@v1
+      with:
+        app_name: ${{ env.APP_NAME }}
+        image: ${{ steps.push-to-quay.outputs.registry-path }}
+        namespace: ${{ env.OPENSHIFT_NAMESPACE }}
+        port: ${{ env.APP_PORT }}
+        # registry_username: ${{ env.REGISTRY_USER }} 
+        # registry_password: ${{ env.REGISTRY_PASSWORD }} 
+        create_pull_secret_from: podman
+        
+        
+    - name: Print application URL
+      env:
+        ROUTE: ${{ steps.deploy-and-expose.outputs.route }}
+        SELECTOR: ${{ steps.deploy-and-expose.outputs.selector }}
+      run: |
+        [[ -n ${{ env.ROUTE }} ]] || (echo "Determining application route failed in previous step"; exit 1)
+        echo
+        echo "======================== Your application is available at: ========================"
+        echo ${{ env.ROUTE }}
+        echo "==================================================================================="
+        echo
+        echo "Your app can be taken down with: \"oc delete all --selector='${{ env.SELECTOR }}'\""
