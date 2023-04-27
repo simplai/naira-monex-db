@@ -7,9 +7,13 @@ on:
 env: 
   user_name: ${{ github.repository_owner }}
   OPENSHIFT_NAMESPACE: dalcalde-dev
-  REGISTRY_USER: ${{ github.actor }} 
-  REGISTRY_PASSWORD: ${{ github.token }}
-  IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
+  #REGISTRY_USER: ${{ github.actor }} 
+  #REGISTRY_PASSWORD: ${{ github.token }}
+  #IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
+  
+  REGISTRY_USER: dalcalde
+  REGISTRY_PASSWORD: HakunaMatata1
+  IMAGE_REGISTRY: quay.io
   
   APP_PORT: 5432
   APP_NAME: naira-monex-db
