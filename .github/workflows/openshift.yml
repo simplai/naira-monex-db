@@ -13,7 +13,7 @@ env:
   
   REGISTRY_USER: dalcalde
   REGISTRY_PASSWORD: HakunaMatata1
-  IMAGE_REGISTRY: quay.io
+  IMAGE_REGISTRY: quay.io/dalcalde
   
   APP_PORT: 5432
   APP_NAME: naira-monex-db
@@ -49,7 +49,7 @@ jobs:
       with: 
         username: ${{ env.REGISTRY_USER }} 
         password: ${{ env.REGISTRY_PASSWORD }} 
-        registry: ${{ env.IMAGE_REGISTRY }}/dalcalde
+        registry: ${{ env.IMAGE_REGISTRY }}
         
     - name: Log in to redhat registry
       uses: redhat-actions/podman-login@v1 
