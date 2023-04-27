@@ -25,7 +25,7 @@ env:
   # name_image_build: es-indexer-monextrader 
   # name_image_build: historical-connector-monextrader 
   # name_image_build: kafka-consumer-monextrader 
-  name_image_build: naira-monex-back 
+  name_image_build: naira-monex-db 
   
 jobs: 
   Deploy-environment-pre: 
