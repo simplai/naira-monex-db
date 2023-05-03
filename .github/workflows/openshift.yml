@@ -5,15 +5,18 @@ on:
     branches: [ master ] 
     
 env: 
-  user_name: ${{ github.repository_owner }}
-  OPENSHIFT_NAMESPACE: davidalc2012-dev
-  REGISTRY_USER: ${{ github.actor }} 
-  REGISTRY_PASSWORD: ${{ github.token }}
-  IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
+  #user_name: ${{ github.repository_owner }}
+  #OPENSHIFT_NAMESPACE: davidalc2012-dev
+  #REGISTRY_USER: ${{ github.actor }} 
+  #REGISTRY_PASSWORD: ${{ github.token }}
+  #IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
   
-  #REGISTRY_USER: dalcalde
-  #REGISTRY_PASSWORD: HakunaMatata1
-  #IMAGE_REGISTRY: quay.io/dalcalde
+  user_name: ${{ secrets.GIT_USERNAME }}
+  OPENSHIFT_NAMESPACE: naira-credito-digital-dev
+  REGISTRY_USER: ${{ secrets.REGISTRY_USER }} 
+  REGISTRY_PASSWORD: ${{ secrets.GIT_TOKEN }}
+  IMAGE_REGISTRY: ghcr.io/simplai-monex/naira
+
   
   APP_PORT: 5432
   APP_NAME: naira-monex-db
@@ -59,7 +62,6 @@ jobs:
         registry: registry.redhat.io
         
         
-        
     - name: Build from Dockerfile
       id: build-image
       uses: redhat-actions/buildah-build@v2
@@ -81,46 +83,46 @@ jobs:
         tags: ${{ steps.build-image.outputs.tags }} 
         registry: ${{ env.IMAGE_REGISTRY }} 
         
-    - name: Install oc
-      uses: redhat-actions/openshift-tools-installer@v1
-      with:
-        oc: 4
+    #- name: Install oc
+    #  uses: redhat-actions/openshift-tools-installer@v1
+    #  with:
+    #    oc: 4
         
-    - name: Authenticate and set context in openshift 
-      uses: redhat-actions/oc-login@v1 
-      with: 
-        openshift_server_url: ${{ secrets.OPENSHIFT_SERVER }} 
-        openshift_token: ${{ secrets.OPENSHIFT_TOKEN }} 
-        insecure_skip_tls_verify: true 
-        namespace: ${{ env.OPENSHIFT_NAMESPACE }} 
+    #- name: Authenticate and set context in openshift 
+    #  uses: redhat-actions/oc-login@v1 
+    #  with: 
+    #    openshift_server_url: ${{ secrets.OPENSHIFT_SERVER }} 
+    #    openshift_token: ${{ secrets.OPENSHIFT_TOKEN }} 
+    #    insecure_skip_tls_verify: true 
+    #    namespace: ${{ env.OPENSHIFT_NAMESPACE }} 
         
-    - name: Create and expose app
-      id: deploy-and-expose
-      uses: redhat-actions/oc-new-app@v1
-      with:
-        app_name: ${{ env.APP_NAME }}
-        image: ${{ steps.push-to-quay.outputs.registry-path }}
-        namespace: ${{ env.OPENSHIFT_NAMESPACE }}
-        port: ${{ env.APP_PORT }}
-        # registry_username: ${{ env.REGISTRY_USER }} 
-        # registry_password: ${{ env.REGISTRY_PASSWORD }} 
-        create_pull_secret_from: podman
-        
-        
-    - name: Delete route
-      run: |
-        oc delete route naira-monex-db
+    #- name: Create and expose app
+    #  id: deploy-and-expose
+    #  uses: redhat-actions/oc-new-app@v1
+    #  with:
+    #    app_name: ${{ env.APP_NAME }}
+    #    image: ${{ steps.push-to-quay.outputs.registry-path }}
+    #    namespace: ${{ env.OPENSHIFT_NAMESPACE }}
+    #    port: ${{ env.APP_PORT }}
+    #    # registry_username: ${{ env.REGISTRY_USER }} 
+    #    # registry_password: ${{ env.REGISTRY_PASSWORD }} 
+    #    create_pull_secret_from: podman
         
         
-    - name: Print application URL
-      env: 
-        ROUTE: ${{ steps.deploy-and-expose.outputs.route }}
-        SELECTOR: ${{ steps.deploy-and-expose.outputs.selector }}
-      run: |
-        [[ -n ${{ env.ROUTE }} ]] || (echo "Determining application route failed in previous step"; exit 1)
-        echo
-        echo "======================== Your application is available at: ========================"
-        echo ${{ env.ROUTE }}
-        echo "==================================================================================="
-        echo
-        echo "Your app can be taken down with: \"oc delete all --selector='${{ env.SELECTOR }}'\""
+    #- name: Delete route
+    #  run: |
+    #    oc delete route naira-monex-db
+        
+        
+    #- name: Print application URL
+    #  env: 
+    #    ROUTE: ${{ steps.deploy-and-expose.outputs.route }}
+    #    SELECTOR: ${{ steps.deploy-and-expose.outputs.selector }}
+    #  run: |
+    #    [[ -n ${{ env.ROUTE }} ]] || (echo "Determining application route failed in previous step"; exit 1)
+    #    echo
+    #    echo "======================== Your application is available at: ========================"
+    #    echo ${{ env.ROUTE }}
+    #    echo "==================================================================================="
+    #    echo
+    #    echo "Your app can be taken down with: \"oc delete all --selector='${{ env.SELECTOR }}'\""
