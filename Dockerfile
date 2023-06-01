@@ -8,3 +8,5 @@ ENV POSTGRESQL_PASSWORD=s3cr3tPassW00rd
 ENV POSTGRESQL_DATABASE=naira
 
 ADD dump.sql .
+ADD dump01062023c.sql .
+ADD dump01062023s.sql .
