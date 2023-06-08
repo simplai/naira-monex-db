@@ -5,17 +5,17 @@ on:
     branches: [ master ] 
     
 env: 
-  user_name: ${{ github.repository_owner }}
+  #user_name: ${{ github.repository_owner }}
   #OPENSHIFT_NAMESPACE: davidalc2012-dev
-  REGISTRY_USER: ${{ github.actor }} 
-  REGISTRY_PASSWORD: ${{ github.token }}
-  IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
+  #REGISTRY_USER: ${{ github.actor }} 
+  #REGISTRY_PASSWORD: ${{ github.token }}
+  #IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
   
-  #user_name: ${{ secrets.GIT_USERNAME }}
+  user_name: ${{ secrets.GIT_USERNAME }}
   OPENSHIFT_NAMESPACE: naira-credito-digital-dev
-  #REGISTRY_USER: ${{ secrets.REGISTRY_USER }} 
-  #REGISTRY_PASSWORD: ${{ secrets.GIT_TOKEN }}
-  #IMAGE_REGISTRY: ghcr.io/simplai-monex/naira
+  REGISTRY_USER: ${{ secrets.REGISTRY_USER }} 
+  REGISTRY_PASSWORD: ${{ secrets.GIT_TOKEN }}
+  IMAGE_REGISTRY: ghcr.io/simplai-monex/naira
 
   
   APP_PORT: 5432
