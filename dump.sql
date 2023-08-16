@@ -566,7 +566,8 @@ CREATE TABLE public.creditapplication (
     max_debt_service double precision,
     manual_action_id integer,
     manual_action_info character varying,
-    application_date character varying NOT NULL
+    application_date character varying NOT NULL,
+    line_text character varying
 );
 
 
@@ -900,7 +901,12 @@ CREATE TABLE public.pyme_express_indicator (
     "arr_saldoVencido30_59" double precision[],
     "arr_saldoVencido60_89" double precision[],
     "arr_saldoVencidoA90" double precision[],
-    line_max_actual double precision
+    line_max_actual double precision,
+    rule_observation_keys character varying,
+    rule_antiquity character varying,
+    rule_actual_delay character varying,
+    rule_historic_delay character varying,
+    recommendation character varying
 );
 
 
@@ -1868,6 +1874,7 @@ COPY public.admin_field (id, field) FROM stdin;
 218	express.score_target_keys
 219	express.score_target_credit_relevance
 220	express.score_target_keys
+221	express.rule_observation_keys
 \.
 
 
@@ -1948,7 +1955,7 @@ COPY public.admin_status (id, status, weight) FROM stdin;
 --
 
 COPY public.alembic_version (version_num) FROM stdin;
-a72e6fb1f6ef
+de340b581849
 \.
 
 
@@ -1956,7 +1963,7 @@ a72e6fb1f6ef
 -- Data for Name: creditapplication; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-COPY public.creditapplication (id, id_external, is_client, router, n_employees, operation_antiquity, economic_sector, product_requested, rate, term_months, payment_method_equity, payment_method_interest, credit_destiny, requested_amount, regional, business_group, statements_date, currency, insert_date, update_date, rule_id, rule_info, rule_history, score_id, score, score_history, business_profile, aggrupation_history, risk_level, line_factor, line_granted, action_id, action_info, "limit", max_debt_service, manual_action_id, manual_action_info, application_date) FROM stdin;
+COPY public.creditapplication (id, id_external, is_client, router, n_employees, operation_antiquity, economic_sector, product_requested, rate, term_months, payment_method_equity, payment_method_interest, credit_destiny, requested_amount, regional, business_group, statements_date, currency, insert_date, update_date, rule_id, rule_info, rule_history, score_id, score, score_history, business_profile, aggrupation_history, risk_level, line_factor, line_granted, action_id, action_info, "limit", max_debt_service, manual_action_id, manual_action_info, application_date, line_text) FROM stdin;
 \.
 
 
@@ -1980,7 +1987,7 @@ COPY public.leasing_indicator (id, naira_id, anual_sales, net_utility_ltm, equit
 -- Data for Name: pyme_express_indicator; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-COPY public.pyme_express_indicator (id, naira_id, business_profile, line_granted, exec_time, requested_amount, anual_inferred_income, sum_active_balance, operation_antiquity, monex_payment_experience, bureau_actual_behaviour, max_actual_delay_amount, bureau_historic_behaviour, max_historic_delay_amount, credit_antiquity, observation_key, prevention_key, esg, liquid_pledge, is_client, profitability_monex, economic_sector, line_max_historic, score_leverage, score_operation_antiquity, score_monex_payment_experience, score_bureau_actual_behaviour, score_payment_actual_bureau_behaviour, score_bureau_historic_behaviour, score_payment_historic_bureau_behaviour, score_credit_antiquity, score_credit_relevance, score_observation_prevention_keys, rule_anual_inferred_income, rule_economic_sector, rule_esg, rule_liquid_pledge, rule_profitability_monex, min_values, score_payment_actual_bureau_behaviour_final, score_payment_historic_bureau_behaviour_final, score_qualitative, score_quantitative, score_behaviour, leverage, score_target_credit_relevance, score_target_keys, saldos_impago, var_deuda, creditos_activos_aval, saldo_vencido_activas_aval, saldo_vencido_aval, deuda_actual_aval, comportamientos_acreditado, comportamientos_aval, claves_acreditado, claves_aval, creditos_activos_acreditado, saldo_vencido_activas_acreditado, saldo_vencido_acreditado, score_buro_aval, score_buro_acreditado, line_max_product, line_max_product_factor, line_max_historic_factor, anual_inferred_income_factor, line_max_historic_value, anual_inferred_income_value, arr_periodo, arr_saldo, "arr_saldoVencido1_29", "arr_saldoVencido30_59", "arr_saldoVencido60_89", "arr_saldoVencidoA90", line_max_actual) FROM stdin;
+COPY public.pyme_express_indicator (id, naira_id, business_profile, line_granted, exec_time, requested_amount, anual_inferred_income, sum_active_balance, operation_antiquity, monex_payment_experience, bureau_actual_behaviour, max_actual_delay_amount, bureau_historic_behaviour, max_historic_delay_amount, credit_antiquity, observation_key, prevention_key, esg, liquid_pledge, is_client, profitability_monex, economic_sector, line_max_historic, score_leverage, score_operation_antiquity, score_monex_payment_experience, score_bureau_actual_behaviour, score_payment_actual_bureau_behaviour, score_bureau_historic_behaviour, score_payment_historic_bureau_behaviour, score_credit_antiquity, score_credit_relevance, score_observation_prevention_keys, rule_anual_inferred_income, rule_economic_sector, rule_esg, rule_liquid_pledge, rule_profitability_monex, min_values, score_payment_actual_bureau_behaviour_final, score_payment_historic_bureau_behaviour_final, score_qualitative, score_quantitative, score_behaviour, leverage, score_target_credit_relevance, score_target_keys, saldos_impago, var_deuda, creditos_activos_aval, saldo_vencido_activas_aval, saldo_vencido_aval, deuda_actual_aval, comportamientos_acreditado, comportamientos_aval, claves_acreditado, claves_aval, creditos_activos_acreditado, saldo_vencido_activas_acreditado, saldo_vencido_acreditado, score_buro_aval, score_buro_acreditado, line_max_product, line_max_product_factor, line_max_historic_factor, anual_inferred_income_factor, line_max_historic_value, anual_inferred_income_value, arr_periodo, arr_saldo, "arr_saldoVencido1_29", "arr_saldoVencido30_59", "arr_saldoVencido60_89", "arr_saldoVencidoA90", line_max_actual, rule_observation_keys, rule_antiquity, rule_actual_delay, rule_historic_delay, recommendation) FROM stdin;
 \.
 
 
@@ -2026,7 +2033,7 @@ COPY public.role_user (user_id, role_id) FROM stdin;
 
 COPY public.users (id, name, "user", email, password, active, authenticated, last_action) FROM stdin;
 2	gestor	gestor	gestor@naira.com	gestor	t	f	\N
-1	admin	admin	admin@naira.com	$2b$12$jWzdOyahOEftUcbZrsCP4./pb2i8yNWjXQhFKPaGncrKLgHEz74X6	t	f	2023-07-27 17:29:35.279737
+1	admin	admin	admin@naira.com	$2b$12$jWzdOyahOEftUcbZrsCP4./pb2i8yNWjXQhFKPaGncrKLgHEz74X6	t	f	2023-08-16 04:49:20.959642
 \.
 
 
@@ -2048,7 +2055,7 @@ SELECT pg_catalog.setval('public.admin_aggrupation_option_id_seq', 35, true);
 -- Name: admin_condition_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
 --
 
-SELECT pg_catalog.setval('public.admin_condition_id_seq', 72, true);
+SELECT pg_catalog.setval('public.admin_condition_id_seq', 73, true);
 
 
 --
@@ -2083,14 +2090,14 @@ SELECT pg_catalog.setval('public.admin_discretization_id_seq', 32, true);
 -- Name: admin_field_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
 --
 
-SELECT pg_catalog.setval('public.admin_field_id_seq', 220, true);
+SELECT pg_catalog.setval('public.admin_field_id_seq', 221, true);
 
 
 --
 -- Name: admin_rule_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
 --
 
-SELECT pg_catalog.setval('public.admin_rule_id_seq', 30, true);
+SELECT pg_catalog.setval('public.admin_rule_id_seq', 31, true);
 
 
 --
@@ -2125,7 +2132,7 @@ SELECT pg_catalog.setval('public.admin_status_id_seq', 7, true);
 -- Name: creditapplication_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
 --
 
-SELECT pg_catalog.setval('public.creditapplication_id_seq', 1, false);
+SELECT pg_catalog.setval('public.creditapplication_id_seq', 268, true);
 
 
 --
@@ -2146,7 +2153,7 @@ SELECT pg_catalog.setval('public.leasing_indicator_id_seq', 1, false);
 -- Name: pyme_express_indicator_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
 --
 
-SELECT pg_catalog.setval('public.pyme_express_indicator_id_seq', 1, false);
+SELECT pg_catalog.setval('public.pyme_express_indicator_id_seq', 268, true);
 
 
 --
