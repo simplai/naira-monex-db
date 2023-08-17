@@ -567,7 +567,8 @@ CREATE TABLE public.creditapplication (
     manual_action_id integer,
     manual_action_info character varying,
     application_date character varying NOT NULL,
-    line_text character varying
+    line_text character varying,
+    recommendation character varying
 );
 
 
@@ -1955,7 +1956,7 @@ COPY public.admin_status (id, status, weight) FROM stdin;
 --
 
 COPY public.alembic_version (version_num) FROM stdin;
-de340b581849
+5c61b139aec6
 \.
 
 
@@ -1963,7 +1964,7 @@ de340b581849
 -- Data for Name: creditapplication; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-COPY public.creditapplication (id, id_external, is_client, router, n_employees, operation_antiquity, economic_sector, product_requested, rate, term_months, payment_method_equity, payment_method_interest, credit_destiny, requested_amount, regional, business_group, statements_date, currency, insert_date, update_date, rule_id, rule_info, rule_history, score_id, score, score_history, business_profile, aggrupation_history, risk_level, line_factor, line_granted, action_id, action_info, "limit", max_debt_service, manual_action_id, manual_action_info, application_date, line_text) FROM stdin;
+COPY public.creditapplication (id, id_external, is_client, router, n_employees, operation_antiquity, economic_sector, product_requested, rate, term_months, payment_method_equity, payment_method_interest, credit_destiny, requested_amount, regional, business_group, statements_date, currency, insert_date, update_date, rule_id, rule_info, rule_history, score_id, score, score_history, business_profile, aggrupation_history, risk_level, line_factor, line_granted, action_id, action_info, "limit", max_debt_service, manual_action_id, manual_action_info, application_date, line_text, recommendation) FROM stdin;
 \.
 
 
@@ -2033,7 +2034,7 @@ COPY public.role_user (user_id, role_id) FROM stdin;
 
 COPY public.users (id, name, "user", email, password, active, authenticated, last_action) FROM stdin;
 2	gestor	gestor	gestor@naira.com	gestor	t	f	\N
-1	admin	admin	admin@naira.com	$2b$12$jWzdOyahOEftUcbZrsCP4./pb2i8yNWjXQhFKPaGncrKLgHEz74X6	t	f	2023-08-16 04:49:20.959642
+1	admin	admin	admin@naira.com	$2b$12$jWzdOyahOEftUcbZrsCP4./pb2i8yNWjXQhFKPaGncrKLgHEz74X6	t	f	2023-08-17 23:20:57.669403
 \.
 
 
@@ -2132,7 +2133,7 @@ SELECT pg_catalog.setval('public.admin_status_id_seq', 7, true);
 -- Name: creditapplication_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
 --
 
-SELECT pg_catalog.setval('public.creditapplication_id_seq', 268, true);
+SELECT pg_catalog.setval('public.creditapplication_id_seq', 305, true);
 
 
 --
@@ -2153,7 +2154,7 @@ SELECT pg_catalog.setval('public.leasing_indicator_id_seq', 1, false);
 -- Name: pyme_express_indicator_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
 --
 
-SELECT pg_catalog.setval('public.pyme_express_indicator_id_seq', 268, true);
+SELECT pg_catalog.setval('public.pyme_express_indicator_id_seq', 303, true);
 
 
 --
