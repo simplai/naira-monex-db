@@ -7,4 +7,6 @@ ENV POSTGRESQL_USER=admin
 ENV POSTGRESQL_PASSWORD=s3cr3tPassW00rd
 ENV POSTGRESQL_DATABASE=naira
 
+LABEL org.opencontainers.image.source https://github.com/simplai-monex/naira
+
 ADD dump.sql .
