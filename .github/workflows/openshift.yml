@@ -11,9 +11,9 @@ env:
   IMAGE_REGISTRY: ghcr.io/simplai-monex/naira
 
   # Nairatest
-  #APP_NAME: naira-monex-db
+  APP_NAME: naira-monex-db
   # Dev
-  APP_NAME: naira-monex-db-dev
+  #APP_NAME: naira-monex-db-dev
   # Prod
   #APP_NAME: naira-monex-db-pre
 
