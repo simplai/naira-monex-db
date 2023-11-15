@@ -14,5 +14,6 @@ ADD dump.sql .
 ADD check_db.sh .
 
 
-RUN chmod +x check_db.sh
-RUN ./check_db.sh
+CMD ["chmod", "+x",  "check_db.sh"]
+#RUN chmod +x check_db.sh
+CMD ["./check_db.sh"]
