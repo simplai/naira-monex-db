@@ -11,9 +11,4 @@ LABEL org.opencontainers.image.source https://github.com/simplai-monex/naira
 USER 1000740000:1000
 
 ADD dump.sql .
-COPY check_db.sh .
-
-
-RUN ["chmod", "+x", "./check_db.sh"]
-#RUN chmod +x check_db.sh
-CMD ["./check_db.sh"]
+ADD check_db.sh .
