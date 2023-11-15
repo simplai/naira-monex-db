@@ -13,3 +13,5 @@ USER 1000740000:1000
 ADD dump.sql .
 
 COPY --chmod=0755 check_db.sh .
+
+CMD ["bash", "check_db.sh"]
