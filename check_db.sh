@@ -1,4 +1,4 @@
-
+#!/bin/bash
 until pg_isready -h localhost -p 5432 -U $POSTGRESQL_USER; do
       echo "WAITIIIIING"
       sleep 1
