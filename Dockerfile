@@ -8,7 +8,7 @@ ENV POSTGRESQL_DATABASE=naira
 
 LABEL org.opencontainers.image.source https://github.com/simplai-monex/naira
 
-USER 1000740000:1000
+#USER 1000740000:1000
 
 ADD dump.sql .
 
