@@ -1731,10 +1731,6 @@ COPY public.admin_discretization_condition (id, field_id, "order", min, max, all
 201	\N	7	2	\N	{}	f	0	31
 202	\N	8	\N	\N	{}	t	0	31
 203	\N	1	\N	\N	{0}	f	10	32
-211	\N	3	3	5	{}	f	6	30
-212	\N	4	2	3	{}	f	4	30
-213	\N	5	1	2	{}	f	0	30
-214	\N	6	0	1	{}	f	-18	30
 206	\N	4	\N	\N	{3}	f	-15	32
 216	\N	5	\N	\N	{}	t	6	32
 204	\N	2	\N	\N	{1}	f	10	32
@@ -1746,9 +1742,11 @@ COPY public.admin_discretization_condition (id, field_id, "order", min, max, all
 183	\N	5	5	6	{}	f	-3	28
 184	\N	6	6	7	{}	f	-4	28
 217	\N	7	7	\N	{}	f	-23	28
-209	\N	1	7	\N	{}	f	10	30
-210	\N	2	5	7	{}	f	8	30
-215	\N	7	\N	\N	{-1}	f	0	30
+215	\N	5	\N	\N	{-1}	f	-23	30
+218	\N	1	\N	3	{}	f	-23	30
+219	\N	2	3	5	{}	f	-10	30
+220	\N	3	5	7	{}	f	7	30
+221	\N	4	7	\N	{}	f	10	30
 \.
 
 
@@ -2040,6 +2038,8 @@ COPY public.users (id, name, "user", email, password, active, authenticated, las
 2	gestor	gestor	gestor@naira.com	gestor	t	f	\N
 1	admin	admin	admin@naira.com	$2b$12$jWzdOyahOEftUcbZrsCP4./pb2i8yNWjXQhFKPaGncrKLgHEz74X6	t	f	\N
 3	test_naira	test_naira	test_naira	$2b$12$6vGe0I9YeqxVyT9Qoywc.OqKRsNl/s7F6r.43zaJDlWDHcn2j9HxS	t	f	\N
+5	Luis Manuel Hernández	lmhernandezv@monex.com.mx	lmhernandezv@monex.com.mx	$2b$12$iQF9x6O4Kf6Nx1rBtNxCvO2HF1tao0DWfmAjVox8/uxZIf.bnvfDO	t	f	\N
+6	Magdalena Arriola	marriolap1@monex.com.mx	marriolap1@monex.com.mx	$2b$12$7cZcCyxZG.NHqJ75CZQYQeMcFRCptrEHO0ToZVudzIzjOEmKCJbS.	t	f	\N
 \.
 
 
@@ -2082,7 +2082,7 @@ SELECT pg_catalog.setval('public.admin_decision_matrix_id_seq', 7, true);
 -- Name: admin_discretization_condition_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
 --
 
-SELECT pg_catalog.setval('public.admin_discretization_condition_id_seq', 217, true);
+SELECT pg_catalog.setval('public.admin_discretization_condition_id_seq', 221, true);
 
 
 --
@@ -2138,7 +2138,7 @@ SELECT pg_catalog.setval('public.admin_status_id_seq', 7, true);
 -- Name: creditapplication_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
 --
 
-SELECT pg_catalog.setval('public.creditapplication_id_seq', 992, true);
+SELECT pg_catalog.setval('public.creditapplication_id_seq', 1544, true);
 
 
 --
@@ -2159,7 +2159,7 @@ SELECT pg_catalog.setval('public.leasing_indicator_id_seq', 1, false);
 -- Name: pyme_express_indicator_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
 --
 
-SELECT pg_catalog.setval('public.pyme_express_indicator_id_seq', 957, true);
+SELECT pg_catalog.setval('public.pyme_express_indicator_id_seq', 1503, true);
 
 
 --
@@ -2187,7 +2187,7 @@ SELECT pg_catalog.setval('public.role_id_seq', 2, true);
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
 --
 
-SELECT pg_catalog.setval('public.users_id_seq', 3, true);
+SELECT pg_catalog.setval('public.users_id_seq', 6, true);
 
 
 --
