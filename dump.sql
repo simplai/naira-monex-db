@@ -1218,7 +1218,8 @@ CREATE TABLE public.users (
     password character varying NOT NULL,
     active boolean NOT NULL,
     authenticated boolean,
-    last_action timestamp without time zone
+    last_action timestamp without time zone,
+    fs_uniquifier character varying
 );
 
 
@@ -1742,11 +1743,11 @@ COPY public.admin_discretization_condition (id, field_id, "order", min, max, all
 183	\N	5	5	6	{}	f	-3	28
 184	\N	6	6	7	{}	f	-4	28
 217	\N	7	7	\N	{}	f	-23	28
-215	\N	5	\N	\N	{-1}	f	-23	30
-218	\N	1	\N	3	{}	f	-23	30
-219	\N	2	3	5	{}	f	-10	30
-220	\N	3	5	7	{}	f	7	30
 221	\N	4	7	\N	{}	f	10	30
+215	\N	5	\N	\N	{-1}	f	5	30
+218	\N	1	\N	3	{}	f	5	30
+219	\N	2	3	5	{}	f	7	30
+220	\N	3	5	7	{}	f	9.5	30
 \.
 
 
@@ -1957,7 +1958,7 @@ COPY public.admin_status (id, status, weight) FROM stdin;
 --
 
 COPY public.alembic_version (version_num) FROM stdin;
-6727bb5d1c6c
+7b8b93450aa7
 \.
 
 
@@ -2034,12 +2035,12 @@ COPY public.role_user (user_id, role_id) FROM stdin;
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-COPY public.users (id, name, "user", email, password, active, authenticated, last_action) FROM stdin;
-2	gestor	gestor	gestor@naira.com	gestor	t	f	\N
-1	admin	admin	admin@naira.com	$2b$12$jWzdOyahOEftUcbZrsCP4./pb2i8yNWjXQhFKPaGncrKLgHEz74X6	t	f	\N
-3	test_naira	test_naira	test_naira	$2b$12$6vGe0I9YeqxVyT9Qoywc.OqKRsNl/s7F6r.43zaJDlWDHcn2j9HxS	t	f	\N
-5	Luis Manuel Hernández	lmhernandezv@monex.com.mx	lmhernandezv@monex.com.mx	$2b$12$iQF9x6O4Kf6Nx1rBtNxCvO2HF1tao0DWfmAjVox8/uxZIf.bnvfDO	t	f	\N
-6	Magdalena Arriola	marriolap1@monex.com.mx	marriolap1@monex.com.mx	$2b$12$7cZcCyxZG.NHqJ75CZQYQeMcFRCptrEHO0ToZVudzIzjOEmKCJbS.	t	f	\N
+COPY public.users (id, name, "user", email, password, active, authenticated, last_action, fs_uniquifier) FROM stdin;
+2	gestor	gestor	gestor@naira.com	gestor	t	f	\N	\N
+3	test_naira	test_naira	test_naira	$2b$12$6vGe0I9YeqxVyT9Qoywc.OqKRsNl/s7F6r.43zaJDlWDHcn2j9HxS	t	f	\N	\N
+5	Luis Manuel Hernández	lmhernandezv@monex.com.mx	lmhernandezv@monex.com.mx	$2b$12$iQF9x6O4Kf6Nx1rBtNxCvO2HF1tao0DWfmAjVox8/uxZIf.bnvfDO	t	f	\N	\N
+6	Magdalena Arriola	marriolap1@monex.com.mx	marriolap1@monex.com.mx	$2b$12$7cZcCyxZG.NHqJ75CZQYQeMcFRCptrEHO0ToZVudzIzjOEmKCJbS.	t	f	\N	\N
+1	admin	admin	admin@naira.com	$argon2id$v=19$m=65536,t=3,p=4$DCHk/F9rzVnrXUtJCUHoXQ$GWhvi9cIZCDrpJN3Zuia2/Leic6yQpUKmKOcNvsUVhc	t	f	\N	\N
 \.
 
 
@@ -2138,7 +2139,7 @@ SELECT pg_catalog.setval('public.admin_status_id_seq', 7, true);
 -- Name: creditapplication_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
 --
 
-SELECT pg_catalog.setval('public.creditapplication_id_seq', 1544, true);
+SELECT pg_catalog.setval('public.creditapplication_id_seq', 1614, true);
 
 
 --
@@ -2159,7 +2160,7 @@ SELECT pg_catalog.setval('public.leasing_indicator_id_seq', 1, false);
 -- Name: pyme_express_indicator_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
 --
 
-SELECT pg_catalog.setval('public.pyme_express_indicator_id_seq', 1503, true);
+SELECT pg_catalog.setval('public.pyme_express_indicator_id_seq', 1573, true);
 
 
 --
@@ -2364,6 +2365,14 @@ ALTER TABLE ONLY public.role
 
 ALTER TABLE ONLY public.role
     ADD CONSTRAINT role_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users users_fs_uniquifier_key; Type: CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_fs_uniquifier_key UNIQUE (fs_uniquifier);
 
 
 --
